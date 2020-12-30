@@ -33,12 +33,16 @@ class Testing
     }
 
     /**
-     * Adds an unique test token to the given string.
+     * Adds an unique test token to the given string, if needed.
      *
      * @return string
      */
-    public function addTokenTo($string)
+    public function addTokenIfNeeded($string)
     {
+        if (! $this->inParallel()) {
+            return $string;
+        }
+
         return "{$string}_test_{$this->token()}";
     }
 

@@ -71,10 +71,9 @@ trait RefreshDatabase
             }
 
             $name = $testCase->getConnection()->getConfig('database');
-            $name = Testing::addTokenTo($name);
 
             Schema::createDatabaseIfNotExists(
-                RefreshDatabaseState::$temporaryDatabase = $name
+                RefreshDatabaseState::$temporaryDatabase = Testing::addTokenIfNeeded($name)
             );
         })->app->flush();
     }

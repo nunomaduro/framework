@@ -3,7 +3,7 @@
 namespace Illuminate\Support\Facades;
 
 /**
- * @method static string addTokenTo(string $string)
+ * @method static string addTokenIfNeeded(string $string)
  * @method static bool inParallel()
  * @method static int|false token()
  *
