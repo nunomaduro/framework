@@ -2,6 +2,7 @@
 
 namespace Illuminate\Tests\Database;
 
+use Illuminate\Database\Connection;
 use Illuminate\Database\Schema\Grammars\Grammar;
 use LogicException;
 use Mockery as m;
@@ -21,7 +22,7 @@ class DatabaseAbstractSchemaGrammarTest extends TestCase
         $this->expectException(LogicException::class);
         $this->expectExceptionMessage('This database driver does not support create databases.');
 
-        $grammar->compileCreateDatabaseIfNotExists([]);
+        $grammar->compileCreateDatabaseIfNotExists('foo', m::mock(Connection::class));
     }
 
     public function testDropDatabaseIfExists()

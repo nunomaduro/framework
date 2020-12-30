@@ -31,12 +31,13 @@ abstract class Grammar extends BaseGrammar
     /**
      * Compile a create database if not exists command.
      *
-     * @param  array $options
+     * @param  string $name
+     * @param  \Illuminate\Database\Connection  $connection
      * @return string
      *
      * @internal This method is not meant to be used or overwritten outside the framework itself.
      */
-    public function compileCreateDatabaseIfNotExists($options)
+    public function compileCreateDatabaseIfNotExists($name, $connection)
     {
         throw new LogicException('This database driver does not support create databases.');
     }

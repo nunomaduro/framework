@@ -14,12 +14,8 @@ class MySqlBuilder extends Builder
      */
     public function createDatabaseIfNotExists($name)
     {
-        $options = $this->connection->getConfig();
-
-        $options['database'] = $name;
-
         return $this->connection->statement(
-            $this->grammar->compileCreateDatabaseIfNotExists($options)
+            $this->grammar->compileCreateDatabaseIfNotExists($name, $this->connection)
         );
     }
 

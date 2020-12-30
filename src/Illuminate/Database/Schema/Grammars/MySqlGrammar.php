@@ -29,18 +29,19 @@ class MySqlGrammar extends Grammar
     /**
      * Compile a create database if not exists command.
      *
-     * @param  array $options
+     * @param  string $name
+     * @param  \Illuminate\Database\Connection  $connection
      * @return string
      *
      * @internal This method is not meant to be used or overwritten outside the framework itself.
      */
-    public function compileCreateDatabaseIfNotExists($options)
+    public function compileCreateDatabaseIfNotExists($name, $connection)
     {
         return sprintf(
             "CREATE DATABASE IF NOT EXISTS %s CHARACTER SET %s COLLATE %s;",
-            $options['database'],
-            $options['charset'],
-            $options['collation']
+            $this->wrapValue($name),
+            $this->wrapValue($connection->getConfig('charset')),
+            $this->wrapValue($connection->getConfig('collation')),
         );
     }
 
@@ -56,7 +57,7 @@ class MySqlGrammar extends Grammar
     {
         return sprintf(
             'DROP DATABASE IF EXISTS %s;',
-            $name
+            $this->wrapValue($name)
         );
     }
 
