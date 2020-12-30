@@ -17,16 +17,6 @@ class DatabaseMySqlSchemaGrammarTest extends TestCase
         m::close();
     }
 
-    public function testCreateDatabase()
-    {
-        $blueprint = new Blueprint('users');
-        $blueprint->drop();
-        $statements = $blueprint->toSql($this->getConnection(), $this->getGrammar());
-
-        $this->assertCount(1, $statements);
-        $this->assertSame('drop table `users`', $statements[0]);
-    }
-
     public function testBasicCreateTable()
     {
         $blueprint = new Blueprint('users');
