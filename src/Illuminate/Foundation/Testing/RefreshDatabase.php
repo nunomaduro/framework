@@ -83,7 +83,6 @@ trait RefreshDatabase
     public static function setUpTemporaryDatabase()
     {
         tap(new static(), function ($testCase) {
-            /** @var $testCase static */
             $testCase->refreshApplication();
 
             if (! $testCase->usingTemporaryDatabase()) {
