@@ -12,14 +12,14 @@ class MySqlBuilder extends Builder
      *
      * @internal This method is not meant to be used or overwritten outside the framework itself.
      */
-    public function createDatabase($name)
+    public function createDatabaseIfNotExists($name)
     {
         $options = $this->connection->getConfig();
 
         $options['database'] = $name;
 
         return $this->connection->statement(
-            $this->grammar->compileCreateDatabase($options)
+            $this->grammar->compileCreateDatabaseIfNotExists($options)
         );
     }
 
@@ -34,7 +34,7 @@ class MySqlBuilder extends Builder
     public function dropDatabaseIfExists($name)
     {
         return $this->connection->statement(
-            $this->grammar->compileDropDatabase($name)
+            $this->grammar->compileDropDatabaseIfExists($name)
         );
     }
 

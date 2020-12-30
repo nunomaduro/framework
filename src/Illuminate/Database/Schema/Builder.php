@@ -102,7 +102,7 @@ class Builder
      * @param  string  $name
      * @return bool
      */
-    public function createDatabase($name)
+    public function createDatabaseIfNotExists($name)
     {
         throw new LogicException('This database driver does not support create databases.');
     }

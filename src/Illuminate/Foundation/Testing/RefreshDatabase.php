@@ -92,7 +92,7 @@ trait RefreshDatabase
             $name = $testCase->getConnection()->getConfig('database');
             $name = "{$name}_test_{$testCase->getTemporaryDatabaseToken()}";
 
-            Schema::createDatabase(
+            Schema::createDatabaseIfNotExists(
                 RefreshDatabaseState::$temporaryDatabaseName = $name
             );
         })->app->flush();
