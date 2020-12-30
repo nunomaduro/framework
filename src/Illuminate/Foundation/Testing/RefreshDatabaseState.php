@@ -16,5 +16,5 @@ class RefreshDatabaseState
      *
      * @var string|null
      */
-    public static $temporaryDatabaseName;
+    public static $temporaryDatabase;
 }
