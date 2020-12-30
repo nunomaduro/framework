@@ -27,6 +27,40 @@ class MySqlGrammar extends Grammar
     protected $serials = ['bigInteger', 'integer', 'mediumInteger', 'smallInteger', 'tinyInteger'];
 
     /**
+     * Compile a create database command.
+     *
+     * @param  array $options
+     * @return string
+     *
+     * @internal This method is not meant to be used or overwritten outside the framework itself.
+     */
+    public function compileCreateDatabase($options)
+    {
+        return sprintf(
+            "CREATE DATABASE IF NOT EXISTS %s CHARACTER SET %s COLLATE %s;",
+            $options['database'],
+            $options['charset'],
+            $options['collation']
+        );
+    }
+
+    /**
+     * Compile a drop database command.
+     *
+     * @param  string $name
+     * @return string
+     *
+     * @internal This method is not meant to be used or overwritten outside the framework itself.
+     */
+    public function compileDropDatabase($name)
+    {
+        return sprintf(
+            'DROP DATABASE IF EXISTS %s;',
+            $name
+        );
+    }
+
+    /**
      * Compile the query to determine the list of tables.
      *
      * @return string

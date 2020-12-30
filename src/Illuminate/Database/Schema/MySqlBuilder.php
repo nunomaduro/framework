@@ -5,6 +5,40 @@ namespace Illuminate\Database\Schema;
 class MySqlBuilder extends Builder
 {
     /**
+     * Create a database in the schema.
+     *
+     * @param  string $name
+     * @return bool
+     *
+     * @internal This method is not meant to be used or overwritten outside the framework itself.
+     */
+    public function createDatabase($name)
+    {
+        $options = $this->connection->getConfig();
+
+        $options['database'] = $name;
+
+        return $this->connection->statement(
+            $this->grammar->compileCreateDatabase($options)
+        );
+    }
+
+    /**
+     * Drop a database from the schema if it exists.
+     *
+     * @param  string $name
+     * @return bool
+     *
+     * @internal This method is not meant to be used or overwritten outside the framework itself.
+     */
+    public function dropDatabaseIfExists($name)
+    {
+        return $this->connection->statement(
+            $this->grammar->compileDropDatabase($name)
+        );
+    }
+
+    /**
      * Determine if the given table exists.
      *
      * @param  string  $table

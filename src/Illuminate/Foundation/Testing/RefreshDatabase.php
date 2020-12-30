@@ -3,6 +3,8 @@
 namespace Illuminate\Foundation\Testing;
 
 use Illuminate\Contracts\Console\Kernel;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 trait RefreshDatabase
 {
@@ -13,9 +15,15 @@ trait RefreshDatabase
      */
     public function refreshDatabase()
     {
-        $this->usingInMemoryDatabase()
-                        ? $this->refreshInMemoryDatabase()
-                        : $this->refreshTestDatabase();
+        if ($this->usingInMemoryDatabase()) {
+            return $this->refreshInMemoryDatabase();
+        }
+
+        if ($this->usingTemporaryDatabase()) {
+            $this->switchToTemporaryDatabase();
+        }
+
+        $this->refreshTestDatabase();
     }
 
     /**
@@ -28,6 +36,87 @@ trait RefreshDatabase
         $default = config('database.default');
 
         return config("database.connections.$default.database") === ':memory:';
+    }
+
+    /**
+     * Determine if the current tests are been run in parallel.
+     *
+     * @return bool
+     */
+    protected function usingTemporaryDatabase()
+    {
+        return ! $this->usingInMemoryDatabase() && $this->getTemporaryDatabaseToken() !== false;
+    }
+
+    /**
+     * Returns the temporary test token, if any.
+     *
+     * @return int|false
+     */
+    public function getTemporaryDatabaseToken()
+    {
+        return getenv('TEST_TOKEN');
+    }
+
+    /**
+     * Switch to the temporary test database.
+     *
+     * @return void
+     */
+    protected function switchToTemporaryDatabase()
+    {
+        $default = config('database.default');
+
+        config()->set(
+            "database.connections.{$default}.database",
+            RefreshDatabaseState::$temporaryDatabaseName,
+        );
+    }
+
+    /**
+     * Creates a temporary database, if needed.
+     *
+     * @beforeClass
+     *
+     * @return void
+     */
+    public static function setUpTemporaryDatabase()
+    {
+        tap(new static(), function ($testCase) {
+            /** @var $testCase static */
+            $testCase->refreshApplication();
+
+            if (! $testCase->usingTemporaryDatabase()) {
+                return;
+            }
+
+            $name = $testCase->getConnection()->getConfig('database');
+            $name = "{$name}_test_{$testCase->getTemporaryDatabaseToken()}";
+
+            Schema::createDatabase(
+                RefreshDatabaseState::$temporaryDatabaseName = $name
+            );
+        })->app->flush();
+    }
+
+    /**
+     * Drop the temporary database, if any.
+     *
+     * @afterClass
+     *
+     * @return void
+     */
+    public static function tearDownTemporaryDatabase()
+    {
+        if (RefreshDatabaseState::$temporaryDatabaseName) {
+            tap(new static(), function ($testCase) {
+                $testCase->refreshApplication();
+
+                Schema::dropDatabaseIfExists(
+                    RefreshDatabaseState::$temporaryDatabaseName,
+                );
+            })->app->flush();
+        }
     }
 
     /**

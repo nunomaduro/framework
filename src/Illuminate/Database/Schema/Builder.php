@@ -95,6 +95,32 @@ class Builder
     }
 
     /**
+     * Create a database in the schema.
+     *
+     * @internal This method is not meant to be used or overwritten outside the framework itself.
+     *
+     * @param  string  $name
+     * @return bool
+     */
+    public function createDatabase($name)
+    {
+        throw new LogicException('This database driver does not support create databases.');
+    }
+
+    /**
+     * Drop a database from the schema if it exists.
+     *
+     * @internal This method is not meant to be used or overwritten outside the framework itself.
+     *
+     * @param  string  $name
+     * @return bool
+     */
+    public function dropDatabaseIfExists($name)
+    {
+        throw new LogicException('This database driver does not support drop databases.');
+    }
+
+    /**
      * Determine if the given table exists.
      *
      * @param  string  $table
