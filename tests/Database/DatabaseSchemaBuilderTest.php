@@ -2,6 +2,7 @@
 
 namespace Illuminate\Tests\Database;
 
+use LogicException;
 use Illuminate\Database\Connection;
 use Illuminate\Database\Schema\Builder;
 use Mockery as m;
@@ -13,6 +14,32 @@ class DatabaseSchemaBuilderTest extends TestCase
     protected function tearDown(): void
     {
         m::close();
+    }
+
+    public function testCreateDatabase()
+    {
+        $connection = m::mock(Connection::class);
+        $grammar = m::mock(stdClass::class);
+        $connection->shouldReceive('getSchemaGrammar')->andReturn($grammar);
+        $builder = new Builder($connection);
+
+        $this->expectException(LogicException::class);
+        $this->expectExceptionMessage('This database driver does not support create databases.');
+
+        $builder->createDatabase('foo');
+    }
+
+    public function testDropDatabase()
+    {
+        $connection = m::mock(Connection::class);
+        $grammar = m::mock(stdClass::class);
+        $connection->shouldReceive('getSchemaGrammar')->andReturn($grammar);
+        $builder = new Builder($connection);
+
+        $this->expectException(LogicException::class);
+        $this->expectExceptionMessage('This database driver does not support drop databases.');
+
+        $builder->dropDatabaseIfExists('foo');
     }
 
     public function testHasTableCorrectlyCallsGrammar()
