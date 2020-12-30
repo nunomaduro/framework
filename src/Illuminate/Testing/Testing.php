@@ -2,7 +2,6 @@
 
 namespace Illuminate\Testing;
 
-use Closure;
 use Illuminate\Contracts\Foundation\Application;
 
 class Testing
@@ -61,7 +60,7 @@ class Testing
      *
      * @return int|false
      */
-    public function token()
+    protected function token()
     {
         return static::$tokenResolver
             ? call_user_func(static::$tokenResolver)
@@ -71,10 +70,10 @@ class Testing
     /**
      * Set with token resolver callback.
      *
-     * @param  \Closure  $resolver
+     * @param  \Closure|null  $resolver
      * @return void
      */
-    public static function tokenResolver(Closure $resolver)
+    public static function tokenResolver($resolver)
     {
         static::$tokenResolver = $resolver;
     }
