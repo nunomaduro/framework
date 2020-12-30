@@ -1166,7 +1166,6 @@ class DatabaseMySqlSchemaGrammarTest extends TestCase
         $connection->shouldReceive('getConfig')->once()->once()->with('charset')->andReturn('utf8mb4_bar');
         $connection->shouldReceive('getConfig')->once()->once()->with('collation')->andReturn('utf8mb4_unicode_ci_bar');
 
-
         $statement = $this->getGrammar()->compileCreateDatabaseIfNotExists('my_database_b', $connection);
 
         $this->assertSame(

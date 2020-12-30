@@ -38,7 +38,7 @@ class MySqlGrammar extends Grammar
     public function compileCreateDatabaseIfNotExists($name, $connection)
     {
         return sprintf(
-            "CREATE DATABASE IF NOT EXISTS %s CHARACTER SET %s COLLATE %s;",
+            'CREATE DATABASE IF NOT EXISTS %s CHARACTER SET %s COLLATE %s;',
             $this->wrapValue($name),
             $this->wrapValue($connection->getConfig('charset')),
             $this->wrapValue($connection->getConfig('collation')),

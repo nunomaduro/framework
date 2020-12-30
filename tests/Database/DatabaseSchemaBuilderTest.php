@@ -2,9 +2,9 @@
 
 namespace Illuminate\Tests\Database;
 
-use LogicException;
 use Illuminate\Database\Connection;
 use Illuminate\Database\Schema\Builder;
+use LogicException;
 use Mockery as m;
 use PHPUnit\Framework\TestCase;
 use stdClass;
